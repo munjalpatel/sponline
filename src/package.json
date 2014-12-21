@@ -1,0 +1,25 @@
+{
+  "name": "sponline",
+  "version": "1.0.0",
+  "description": "sponline allows you to perform basic operations againts SharePoint Online.",
+  "main": "sponline.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/munjalpatel/sponline"
+  },
+  "keywords": [
+    "sponline",
+    "SharePoint",
+    "SharePoint Online",
+    "Office 365"
+  ],
+  "author": "Munjal Patel <munjal@munpat.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/munjalpatel/sponline/issues"
+  },
+  "homepage": "https://github.com/munjalpatel/sponline"
+}
