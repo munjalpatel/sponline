@@ -1,6 +1,11 @@
 var expect = require('chai').expect;
 var SPO = require('../sponline.js');
 
+var options = {
+  clientId: '7d2f4c93-2421-4dcd-820d-a0ae35d3f40b',
+  clientSecret: 'secret'
+};
+
 describe('SPOnline', function () {
   it('should throw an error if no options specified', function () {
     expect(SPO.bind(SPO)).to.throw(/No options specified/);
