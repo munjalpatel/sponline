@@ -6,22 +6,22 @@ describe('SPOnline', function () {
     expect(SPO.bind(SPO)).to.throw(/No options specified/);
   });
 
-  it('should throw an error if no app id is specified', function () {
-    expect(SPO.bind(SPO, {})).to.throw(/No app id specified/);
+  it('should throw an error if no client id is specified', function () {
+    expect(SPO.bind(SPO, {})).to.throw(/No client id specified/);
   });
 
-  it('should throw an error if no app secret is specified', function () {
+  it('should throw an error if no client secret is specified', function () {
     expect(SPO.bind(SPO, {
-      appId: '1234'
-    })).to.throw(/No app secret specified/);
+      clientId: '1234'
+    })).to.throw(/No client secret specified/);
   });
 
-  describe('App ID', function () {
+  describe('Client ID', function () {
     it('should be GUID', function () {
       expect(SPO.bind(SPO, {
-        appId: '1234',
-        appSecret: 'secret'
-      })).to.throw(/1234 is not a valid app id/);
+        clientId: '1234',
+        clientSecret: 'secret'
+      })).to.throw(/1234 is not a valid client id/);
     });
   });
 });

@@ -26,6 +26,9 @@
     "chai": "^1.10.0"
   },
   "dependencies": {
+    "jwt-simple": "^0.2.0",
+    "oauth": "^0.9.12",
+    "url": "^0.10.1",
     "validator": "^3.26.0"
   }
 }
