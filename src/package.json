@@ -21,5 +21,11 @@
   "bugs": {
     "url": "https://github.com/munjalpatel/sponline/issues"
   },
-  "homepage": "https://github.com/munjalpatel/sponline"
+  "homepage": "https://github.com/munjalpatel/sponline",
+  "devDependencies": {
+    "chai": "^1.10.0"
+  },
+  "dependencies": {
+    "validator": "^3.26.0"
+  }
 }
