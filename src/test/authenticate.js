@@ -2,8 +2,8 @@ var expect = require('chai').expect;
 var SPO = require('../sponline.js');
 
 var options = {
-  clientId: '7d2f4c93-2421-4dcd-820d-a0ae35d3f40b',
-  clientSecret: 'secret'
+  clientId: process.env.SPONLINE_CLIENT_ID,
+  clientSecret: process.env.SPONLINE_CLIENT_SECRET
 };
 
 describe('SPOnline', function () {
@@ -68,8 +68,26 @@ describe('SPOnline', function () {
       });
     });
 
-    //    it('should have the Refresh Token in response', function (done) {
-    //      
-    //    });
+    it('should have the Refresh Token and Access Token in response', function (done) {
+      this.timeout(5000);
+
+      var spo = new SPO(options);
+      spo.authenticate({
+        siteUrl: process.env.SPONLINE_SITE_URL,
+        appToken: process.env.SPONLINE_APP_TOKEN
+      }, function (err, response) {
+        expect(err).to.be.null();
+        
+        expect(response).to.have.property('refreshToken');
+        expect(response.refreshToken).to.be.a('string');
+        expect(response.refreshToken.length).to.be.at.least(1);
+        
+        expect(response).to.have.property('accessToken');
+        expect(response.accessToken).to.be.a('string');
+        expect(response.accessToken.length).to.be.at.least(1);
+        
+        done();
+      });
+    });
   });
 });

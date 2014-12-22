@@ -33,8 +33,6 @@ SPOnline.prototype.authenticate = function (options, callback) {
     throw new Error(options.appToken + ' is not a valid JWT. ' + err.message);
   }
 
-  var response = {};
-
   var apptxSender = token.appctxsender.split('@');
   var spServer = url.parse(options.siteUrl)
   var resource = apptxSender[0] + '/' + spServer.host + '@' + apptxSender[1];
@@ -54,9 +52,10 @@ SPOnline.prototype.authenticate = function (options, callback) {
       return callback('[' + err.statusCode + '] ' + (JSON.parse(err.data)).error_description.replace(/\r\n/g, ' '));
     }
 
-    response.refreshToken = '';
-
-    callback(response);
+    callback(null, {
+      refreshToken: token.refreshtoken,
+      accessToken: accessToken
+    });
   });
 };
 
