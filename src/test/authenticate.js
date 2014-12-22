@@ -18,19 +18,11 @@ describe('SPOnline', function () {
       expect(spo.authenticate.bind(spo, {})).to.throw(/No site url is specified/);
     });
 
-    it('should throw an error if no token url is specified', function () {
+    it('should throw an error if no app token is specified', function () {
       var spo = new SPO(options);
       expect(spo.authenticate.bind(spo, {
         siteUrl: 'https://sponline'
-      })).to.throw(/No token url is specified/);
-    });
-
-    it('should throw an error if no code is specified', function () {
-      var spo = new SPO(options);
-      expect(spo.authenticate.bind(spo, {
-        siteUrl: 'https://sponline',
-        tokenUrl: 'https://sponline/token'
-      })).to.throw(/No code is specified/);
+      })).to.throw(/No app token is specified/);
     });
   });
 });

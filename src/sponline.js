@@ -14,8 +14,7 @@ function SPOnline(options) {
 SPOnline.prototype.authenticate = function (options) {
   if (!options) throw new Error('No options specified');
   if (!options.siteUrl) throw new Error('No site url is specified');
-  if (!options.tokenUrl) throw new Error('No token url is specified');
-  if (!options.code) throw new Error('No code is specified');
+  if (!options.appToken) throw new Error('No app token is specified');
 };
 
 module.exports = SPOnline;
