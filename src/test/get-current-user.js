@@ -23,11 +23,25 @@ describe('SPOnline', function () {
         siteUrl: process.env.SPONLINE_SITE_URL,
         appToken: process.env.SPONLINE_APP_TOKEN
       }, function (err) {
-        spo.getCurrentUser(function (response) {
+        spo.getCurrentUser(function (err, response) {
+          expect(err).to.be.null();
+
           expect(response).to.have.property('id');
           expect(response.id).to.be.a('number');
-          expect(response.id.length).to.be.above(0);
-
+          expect(response.id).to.be.above(0);
+          
+          expect(response).to.have.property('name');
+          expect(response.name).to.be.a('string');
+          expect(response.name).to.be.not.empty();
+          
+          expect(response).to.have.property('account');
+          expect(response.account).to.be.a('string');
+          expect(response.account).to.be.not.empty();
+          
+          expect(response).to.have.property('email');
+          expect(response.email).to.be.a('string');
+          expect(response.email).to.be.not.empty();
+          
           done();
         });
       });

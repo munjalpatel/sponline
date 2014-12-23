@@ -105,6 +105,19 @@ SPOnline.prototype.authenticate = function (options, callback) {
 
 SPOnline.prototype.getCurrentUser = function (callback) {
   if (!this._accessToken) throw new Error('Not authenticated');
+  this.request('/web/currentuser', function (err, response) {
+    if (err) return callback(err);
+
+    var profile = {
+      id: response.Id,
+      name: response.Title,
+      account: response.LoginName,
+      email: response.Email,
+      raw: response
+    };
+
+    callback(null, profile);
+  });
 };
 
 module.exports = SPOnline;
