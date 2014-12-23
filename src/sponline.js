@@ -113,7 +113,7 @@ SPOnline.prototype.getCurrentUser = function (callback) {
       name: response.Title,
       account: response.LoginName,
       email: response.Email,
-      raw: response
+      _raw: response
     };
 
     callback(null, profile);

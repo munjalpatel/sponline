@@ -42,6 +42,9 @@ describe('SPOnline', function () {
           expect(response.email).to.be.a('string');
           expect(response.email).to.be.not.empty();
           
+          expect(response).to.have.property('_raw');
+          expect(response._raw).to.be.a('object');
+          
           done();
         });
       });
