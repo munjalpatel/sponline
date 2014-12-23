@@ -61,7 +61,6 @@ describe('SPOnline', function () {
         siteUrl: 'https://sponline.com',
         appToken: process.env.SPONLINE_APP_TOKEN
       }, function (err) {
-        console.log('\t' + err);
         expect(err).to.be.a('string');
         expect(err.length).to.be.at.least(1);
         done();
@@ -77,15 +76,15 @@ describe('SPOnline', function () {
         appToken: process.env.SPONLINE_APP_TOKEN
       }, function (err, response) {
         expect(err).to.be.null();
-        
+
         expect(response).to.have.property('refreshToken');
         expect(response.refreshToken).to.be.a('string');
-        expect(response.refreshToken.length).to.be.at.least(1);
-        
+        expect(response.refreshToken).to.be.not.empty();
+
         expect(response).to.have.property('accessToken');
         expect(response.accessToken).to.be.a('string');
-        expect(response.accessToken.length).to.be.at.least(1);
-        
+        expect(response.accessToken).to.be.not.empty();
+
         done();
       });
     });
