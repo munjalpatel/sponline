@@ -1,6 +1,7 @@
 var validator = require('validator'),
   jwt = require('jwt-simple'),
   url = require('url'),
+  https = require('https'),
   OAuth2 = require('oauth').OAuth2;
 
 var SP_AUTH_PATH = '/_layouts/15/OAuthAuthorize.aspx';
@@ -16,6 +17,44 @@ function SPOnline(options) {
   this._clientSecret = options.clientSecret;
 }
 
+SPOnline.prototype.request = function (path, callback) {
+  if (!this._accessToken) return callback('Not authenticated');
+  if (!path) throw new Error('No path specified');
+
+  var spServer = url.parse(this._siteUrl);
+
+  var options = {
+    host: spServer.hostname,
+    port: spServer.port || 443,
+    path: spServer.path + '/_api' + path,
+    method: 'GET',
+    agent: false,
+    ciphers: 'RC4',
+    secureOptions: require('constants').SSL_OP_NO_TLSv1_2,
+    headers: {
+      'Authorization': 'Bearer ' + this._accessToken,
+      'Accept': 'application/json;odata=verbose'
+    }
+  };
+
+  https.get(options, function (res) {
+    res.setEncoding('utf8');
+    var _data = '';
+
+    res.on('data', function (data) {
+      _data += data;
+    });
+
+    res.on('end', function () {
+      callback(null, JSON.parse(_data).d);
+    });
+
+    res.on('error', function (err) {
+      callback(err);
+    });
+  });
+};
+
 SPOnline.prototype.authenticate = function (options, callback) {
   if (!options) throw new Error('No options specified');
   if (!options.siteUrl) throw new Error('No site url is specified');
@@ -25,6 +64,7 @@ SPOnline.prototype.authenticate = function (options, callback) {
     protocols: ['https']
   })) throw new Error(options.siteUrl + ' is not a valid site url');
 
+  var _this = this;
   var token;
 
   try {
@@ -52,11 +92,19 @@ SPOnline.prototype.authenticate = function (options, callback) {
       return callback('[' + err.statusCode + '] ' + (JSON.parse(err.data)).error_description.replace(/\r\n/g, ' '));
     }
 
+    _this._siteUrl = options.siteUrl;
+    _this._refreshToken = token.refreshToken;
+    _this._accessToken = accessToken;
+
     callback(null, {
       refreshToken: token.refreshtoken,
       accessToken: accessToken
     });
   });
+};
+
+SPOnline.prototype.getCurrentUser = function (callback) {
+  if (!this._accessToken) throw new Error('Not authenticated');
 };
 
 module.exports = SPOnline;

@@ -61,7 +61,6 @@ describe('SPOnline', function () {
         siteUrl: 'https://sponline.com',
         appToken: process.env.SPONLINE_APP_TOKEN
       }, function (err) {
-        console.log('\t' + err);
         expect(err).to.be.a('string');
         expect(err.length).to.be.at.least(1);
         done();
