@@ -15,6 +15,7 @@ Node library for SharePoint Online
 
 ### Usage
 
+```javascript
     var SPO = require('sponline');
     
     var options = {
@@ -47,3 +48,4 @@ Node library for SharePoint Online
         console.log('Web Title: ' + response._raw.Title);
       });
     });
+```
