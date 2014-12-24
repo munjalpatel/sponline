@@ -17,7 +17,7 @@ function SPOnline(options) {
   this._clientSecret = options.clientSecret;
 }
 
-SPOnline.prototype.request = function (path, callback) {
+SPOnline.prototype.request = function (path, callback, method) {
   if (!this._accessToken) return callback('Not authenticated');
   if (!path) throw new Error('No path specified');
 
@@ -27,7 +27,7 @@ SPOnline.prototype.request = function (path, callback) {
     host: spServer.hostname,
     port: spServer.port || 443,
     path: spServer.path + '/_api' + path,
-    method: 'GET',
+    method: method || 'GET',
     agent: false,
     ciphers: 'RC4',
     secureOptions: require('constants').SSL_OP_NO_TLSv1_2,
@@ -46,7 +46,9 @@ SPOnline.prototype.request = function (path, callback) {
     });
 
     res.on('end', function () {
-      callback(null, JSON.parse(_data).d);
+      callback(null, {
+        _raw: JSON.parse(_data).d
+      });
     });
 
     res.on('error', function (err) {
@@ -108,16 +110,23 @@ SPOnline.prototype.getCurrentUser = function (callback) {
   this.request('/web/currentuser', function (err, response) {
     if (err) return callback(err);
 
-    var profile = {
-      id: response.Id,
-      name: response.Title,
-      account: response.LoginName,
-      email: response.Email,
-      raw: response
-    };
+    response.id = response._raw.Id;
+    response.name = response._raw.Title;
+    response.account = response._raw.LoginName;
+    response.email = response._raw.Email;
 
-    callback(null, profile);
+    callback(null, response);
   });
+};
+
+SPOnline.prototype.getFormDigest = function (callback) {
+  if (!this._accessToken) throw new Error('Not authenticated');
+  this.request('/contextinfo', function (err, response) {
+    if (err) callback(err);
+    
+    response.digest = response._raw.GetContextWebInformation.FormDigestValue;
+    callback(null, response);
+  }, 'POST');
 };
 
 module.exports = SPOnline;
