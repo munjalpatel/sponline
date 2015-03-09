@@ -8,13 +8,20 @@ var SP_AUTH_PATH = '/_layouts/15/OAuthAuthorize.aspx';
 
 function SPOnline(options) {
   if (!options) throw new Error('No options specified');
-  if (!options.clientId) throw new Error('No client id specified');
-  if (!options.clientSecret) throw new Error('No client secret specified');
 
-  if (!validator.isUUID(options.clientId)) throw new Error(options.clientId + ' is not a valid client id');
+  if (!options.acessToken) {
+    if (!options.clientId) throw new Error('No client id specified');
+    if (!options.clientSecret) throw new Error('No client secret specified');
 
-  this._clientId = options.clientId;
-  this._clientSecret = options.clientSecret;
+    if (!validator.isUUID(options.clientId)) throw new Error(options.clientId + ' is not a valid client id');
+
+    this._clientId = options.clientId;
+    this._clientSecret = options.clientSecret;
+  } else {
+    if (!options.siteUrl) throw new Error('No site url specified');
+    this._accessToken = options.accessToken;
+    this._siteUrl = options.siteUrl;
+  }
 }
 
 SPOnline.prototype.request = function (path, callback, method) {
@@ -63,8 +70,8 @@ SPOnline.prototype.authenticate = function (options, callback) {
   if (!options.appToken) throw new Error('No app token is specified');
 
   if (!validator.isURL(options.siteUrl, {
-    protocols: ['https']
-  })) throw new Error(options.siteUrl + ' is not a valid site url');
+      protocols: ['https']
+    })) throw new Error(options.siteUrl + ' is not a valid site url');
 
   var _this = this;
   var token;
@@ -123,7 +130,7 @@ SPOnline.prototype.getFormDigest = function (callback) {
   if (!this._accessToken) throw new Error('Not authenticated');
   this.request('/contextinfo', function (err, response) {
     if (err) callback(err);
-    
+
     response.digest = response._raw.GetContextWebInformation.FormDigestValue;
     callback(null, response);
   }, 'POST');
