@@ -1,6 +1,6 @@
 {
   "name": "sponline",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "sponline allows you to perform basic operations againts SharePoint Online.",
   "main": "sponline.js",
   "scripts": {
