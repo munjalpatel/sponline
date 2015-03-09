@@ -9,7 +9,7 @@ var SP_AUTH_PATH = '/_layouts/15/OAuthAuthorize.aspx';
 function SPOnline(options) {
   if (!options) throw new Error('No options specified');
 
-  if (!options.acessToken) {
+  if (!options.accessToken) {
     if (!options.clientId) throw new Error('No client id specified');
     if (!options.clientSecret) throw new Error('No client secret specified');
 
