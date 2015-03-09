@@ -44,7 +44,7 @@ describe('SPOnline', function () {
 
           expect(response).to.have.property('_raw');
           expect(response._raw).to.be.a('object');
-          
+
           done();
         });
       });
